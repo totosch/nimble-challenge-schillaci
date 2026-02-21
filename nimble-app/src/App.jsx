@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCandidate } from "./hooks/useCandidate";
+import { useJobs } from "./hooks/useJobs";
+import { JobCard } from "./components/JobCard";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { candidate, loading: candidateLoading, error: candidateError } = useCandidate("rodrigoschillaci97@gmail.com");
+  const { jobs, loading: jobsLoading, error: jobsError } = useJobs();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans antialiased selection:bg-blue-500/30">
+      
+      <div className="max-w-2xl mx-auto p-6 pt-12 sm:pt-20">
+        
+        <header className="mb-10">
+          <h1 className="text-3xl font-semibold tracking-tight text-white mb-2">
+            Nimble Gravity Jobs
+          </h1>
+          
+          {candidateLoading && <p className="text-zinc-500 animate-pulse">Loading...</p>}
+          {candidateError && <p className="text-red-400">error: {candidateError}</p>}
+          
+          {candidate && (
+            <p className="text-zinc-400 text-lg">
+              Candidate: <span className="text-zinc-100 font-medium">{candidate.firstName} {candidate.lastName}</span>
+            </p>
+          )}
+        </header>
+
+        {jobsLoading && <p className="text-zinc-500 animate-pulse">Searching jobs...</p>}
+        {jobsError && <p className="text-red-400">error: {jobsError}</p>}
+
+        {candidate && !jobsLoading && (
+          <div className="flex flex-col gap-4">
+            {jobs.map(job => (
+              <JobCard key={job.id} job={job} candidate={candidate} />
+            ))}
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
