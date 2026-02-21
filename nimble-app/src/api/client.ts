@@ -3,6 +3,7 @@ const BASE_URL = "https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.
 export interface Candidate {
   uuid: string;
   candidateId: string;
+  applicationId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -17,6 +18,7 @@ export interface ApplyBody {
   uuid: string;
   jobId: string;
   candidateId: string;
+  applicationId: string;
   repoUrl: string;
 }
 

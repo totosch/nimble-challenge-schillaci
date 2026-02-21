@@ -27,7 +27,8 @@ export function JobCard({ job, candidate }: Props) {
         uuid: candidate.uuid,
         jobId: job.id,
         candidateId: candidate.candidateId,
-        repoUrl
+        applicationId: candidate.applicationId,
+        repoUrl: repoUrl.trim()
       });
       setSubmitState("success");
     } catch (err) {
